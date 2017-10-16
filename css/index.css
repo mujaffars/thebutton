@@ -28,10 +28,11 @@ body {
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
     height:100%;
-    margin:0px;
+    margin:0 auto;
     padding:0px;
     width:100%;
-    background-image: url('../img/transp_bg.png')
+    background-image: url('../img/transp_bg.png');
+    text-align: center;
 }
 
 /* Portrait layout (default) */
@@ -128,7 +129,7 @@ h1 {
     text-align: center;    
 }
 .cntainr{
-    margin: 0 10px;
+    margin: 10% 5%
 }
 #btnRefresh{
     float: right;
@@ -142,7 +143,6 @@ div {
 }
 #divButton{
     text-align: center;
-    top: 80%;
 }
 #divMessage{
     margin: 2%;
@@ -158,4 +158,13 @@ div {
     line-height: 1.42;
     border-radius: 37px;
     outline: 0;
+}
+#divContent{
+    text-align: center;
+    font-size: 150px;
+    color: #952fad;
+    height: 60%;
+}
+.fa-bicycle{
+    color: #a997a0;
 }

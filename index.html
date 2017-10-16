@@ -32,6 +32,7 @@
         <link href="css/bootstrap-theme.min.css" rel="stylesheet">
         <link href="css/jumbotron-narrow.css" rel="stylesheet">
         <link href="css/index.css" rel="stylesheet">
+        <link href="css/font-awesome.css" rel="stylesheet">
 
         <link rel="stylesheet" href="js/datepicker/css/redmond/jquery-ui-1.10.1.custom.min.css" />
 
@@ -40,7 +41,7 @@
     <body onload="onLoad()">
 
         <form id="loginForm">
-            <nav class="navbar navbar-inverse">
+<!--            <nav class="navbar navbar-inverse">
                 <div class="container">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="#">Call log</a>
@@ -49,17 +50,18 @@
                         <input id="btnRefresh" type="button" value="Refresh" class="btn btn-info btn-lg hide"/>
                     </div>
                 </div>
-            </nav>
+            </nav>-->
             <div class="cntainr">
                 <div>
 
                     <div id="divMessageParent">
-                        <div id="divMessage" class="thumbnail">
-                            This is the message
+                        <div id="divMessage" class="">
+                            
                         </div>
                     </div>
 
-                    <div>
+                    <div id="divContent">
+                        
                     </div>
 
                     <div id="divButton">
@@ -76,6 +78,7 @@
         <script src="js/jquery-1.10.2.js"></script>
         <script src="js/jquery-ui.js"></script>
         <script src="js/config.js"></script>
+        <script src="js/db.js"></script>
         <script src="js/index.js"></script>
         <script src="js/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>

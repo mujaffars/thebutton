@@ -1,38 +1,96 @@
+var dbShell;
+var btnActive = true;
+
 (function () {
     changeCss('body', 'font-size:' + fontSize + 'px;');
-    changeCss('.btn', 'font-size:' + fontSize + 'px;');
+    changeCss('.btn-circle', 'height:' + btnchw + 'px; width:' + btnchw + 'px;');
+    changeCss('#divMessageParent', 'height:' + eval(screenHeight * 25 / 100) + 'px;');
+    changeCss('#divContent', 'height:' + eval(screenHeight * 50 / 100) + 'px;');
+    changeCss('.fa', 'font-size:' + eval(screenHeight * 35 / 100) + 'px;');
     changeCss('.navbar-brand', 'font-size:' + eval(fontSize / 2) + 'px;');
     changeCss('#divCallRecords', 'font-size:' + recordFontSize + 'px;');
     changeCss('label.error', 'font-size:' + eval(fontSize / 1.5) + 'px;');
     changeCss('.imgLoader', 'height:' + eval(fontSize / 2) + 'px;');
     changeCss('#GridView1, #sltUsers', 'font-size:' + eval(fontSize / 2.2) + 'px;');
-    var logedIn = localStorage.getItem("logedIn");
-    logedIn = 'true';
 
-    if (logedIn === 'true') {
-        $('#divLoading').removeClass('hide');
-        $('.tblLogin, .tblVerify').addClass('hide');
-        $('.lnkLogOut, .lnkRefresh').removeClass('hide');
-        getRecords();
-    }
+    $('body').css({
+        height: $(window).height(),
+        width: parseInt($(window).height()) * 56.25 / 100
+    })
+    
+    createDb();
 
-    $('.lnkLogOut').click(function () {
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
-        } else {
-            localStorage.setItem("logedIn", "false");
-            $('#divCallRecords').hide();
-            $('.tblLogin').show();
-            $('.lnkLogOut').addClass('hide');
-            window.location.reload();
+    $(".btn-circle").click(function () {
+        if (btnActive) {
+            getProfileDtl(proDtlForNextMsg);
+            btnActive = false;
+            setTimeout(function () {
+                btnActive = true;
+            }, 10)
         }
     })
-    $('.lnkRefresh').click(function () {
-        $('#divLoading').removeClass('hide');
-        subGetRecords();
-    })
+
 })();
 
+function proDtlForNextMsg(respData) {
+    //console.log(log);
+    var nextMsgId = eval(parseInt(respData.msg_id) + 1);
+    getMessageDtl(nextMsgId, showMessage);
+}
+
+function showMessage(respData) {
+    // If func is defined trigger it
+    if (respData.func !== "") {
+        window[respData.func](respData);
+    } else {
+        $('#divMessage').html(respData.text);
+        updateMsgId(respData.id);
+    }
+}
+
+function gift1(respData) {
+
+    // Check if the counter field present
+    var funCnt = $("#divContent").find("#txtFunCnt").val();
+    if (funCnt === undefined) {
+        $('#divMessage').html(respData.text);
+        $('#divContent').html('<i class="fa fa-gift" aria-hidden="true"></i>');
+        $('#divContent').append("<input type='hidden' id='txtFunCnt' value='1'/>");
+
+        $(".fa-gift").click(function () {
+            $('#divContent').html('<i class="fa fa-bicycle" aria-hidden="true"></i>');
+            getProfileDtl(updateMsgId2);
+        })
+        funCnt = 1;
+    }
+    console.log(funCnt);
+    console.log(giftMsg[funCnt]);
+    $('#divMessage').html(giftMsg[funCnt].txt);    
+    $('#divContent').find("#txtFunCnt").val(eval(parseInt(funCnt) + 1));
+
+
+}
+
+function updateMsgId2(respData){
+    updateMsgId(eval(parseInt(respData.msg_id) + 1));
+    getProfileDtl(proDtlForNextMsg);
+}
+
+function giftLike(respData) {
+    // Check if the counter field present
+    var funCnt = $("#divContent").find("txtFunCnt").val();
+    if (funCnt === undefined) {
+        $('#divMessage').html(respData.text);
+        $('#divContent').append("<div><input type='button' id='btnGiftLike' class='btn btn-info' value='Like'/>&nbsp;<input type='button' id='btnGiftDislike' class='btn btn-error' value='Like'/></div>");
+   
+        $("#btnGiftLike").click(function () {
+            $('#divContent').html('You');
+        })
+        funCnt = 1;
+    }
+    $('#divMessage').html(giftMsg[funCnt].text);
+    $('#divContent').find("#txtFunCnt").val(eval(funCnt + 1));
+}
 
 function onLoad() {
     if ((/(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent))) {
