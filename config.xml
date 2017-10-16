@@ -1,10 +1,10 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.mujaffars.calldemoadmin"
+        id        = "com.mujaffars.theredbutton"
         version   = "1.0.0">
-    <name>Shiv Traders</name>
+    <name>The red button</name>
     
-    <description>Call log</description>
+    <description>The red button</description>
     <content src="index.html" />
     <access origin="*" />
 
