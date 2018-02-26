@@ -103,8 +103,7 @@ function onLoad() {
     }
 }
 
-function initApp() {
-}
+
 
 $(function () {
 
