@@ -1,6 +1,6 @@
 var messages = [
     {txt: "", func: ''},
-    {txt: "Hello, user", func: ''},
+    {txt: "Hi ...", func: ''},
     {txt: "There is no game, Don't waste your time", func: ''},
     {txt: "Don't press that button again", func: ''},
     {txt: "You pressed it again", func: ''},
@@ -31,15 +31,21 @@ var messages = [
     {txt: "I will give you a Gift, Then you will leave me alone", func: ''},
     {txt: "Here is your Gift, Touch on it to Open", func: 'gift1'},
     {txt: "Ahaa! A brand new bicycle", func: ''},
-    {txt: "Did you like the gift?", func: ''},
-    {txt: "Did you like the gift?", func: ''},
+    {txt: "A vehicle consisting of two wheels held in a frame one behind the other", func: ''},
+    {txt: "With this you can spent the holidays bicycling around the beautiful Devonshire countryside", func: ''},
+    {txt: "Do you know? The Tour de France is one of the most famous bicycle races in the world", func: ''},
+    {txt: "That's enough, You got too much info", func: 'removegift1'},
+    {txt: "I think we both having healthy discussion, Though only I am speaking (texting)", func: ''},
+    {txt: "Oh No ....", func: ''},
+    {txt: "They are here !!!", func: ''},
+    {txt: "They dont want our communication to happen", func: ''},
 ]
 
 var giftMsg = [
     {txt: "", func: ''},
     {txt: "Touch the Gift to open", func: ''},
     {txt: "Open the gift first for next message", func: ''},
-    {txt: "Are you awake? Did you understand what I say? Touch the Gift to open", func: ''}
+    {txt: "Are you awake? Touch the Gift to open", func: ''}
 ]
 
 function createDb() {
@@ -93,35 +99,76 @@ function createSetting() {
 }
 
 function getProfileDtl(callback) {
-    dbShell.transaction(function (tx) {
-        tx.executeSql("SELECT * FROM setting WHERE id = ?", [1], function (tx, res) {
-            var result = res.rows[0];
-            callback(result);
-            return;
-        });
-    }, dbErrorHandler);
+    var result = new Object();
+    result.msg_id = getSetLocalstorage('msgid', '', 'get');
+    callback(result);
+//    dbShell.transaction(function (tx) {
+//        tx.executeSql("SELECT * FROM setting WHERE id = ?", [1], function (tx, res) {
+//            var result = res.rows[0];
+//            callback(result);
+//            return;
+//        });
+//    }, dbErrorHandler);
 }
 
 // Update Current msg id in profile 
 function updateMsgId(msgId) {
-    dbShell.transaction(function (tx) {
-        tx.executeSql("UPDATE setting SET msg_id = ? WHERE id = ?", [msgId, 1], function (tx, res) {
-            return 'done';
-        });
-    }, dbErrorHandler);
+    getSetLocalstorage('msgid', '', 'setnext');
+    return 'done';
+    
+//    dbShell.transaction(function (tx) {
+//        tx.executeSql("UPDATE setting SET msg_id = ? WHERE id = ?", [msgId, 1], function (tx, res) {
+//            return 'done';
+//        });
+//    }, dbErrorHandler);
 }
 
 function getMessageDtl(msgId, callback) {
-    console.log(msgId);
-    dbShell.transaction(function (tx) {
-        tx.executeSql("SELECT * FROM messages WHERE id = ?", [msgId], function (tx, res) {
-            var result = res.rows[0];
-            callback(result);
-            return;
-        });
-    }, dbErrorHandler);
+    console.log(messages[msgId]);
+    callback(messages[msgId]);
+//    dbShell.transaction(function (tx) {
+//        tx.executeSql("SELECT * FROM messages WHERE id = ?", [msgId], function (tx, res) {
+//            var result = res.rows[0];
+//            callback(result);
+//            return;
+//        });
+//    }, dbErrorHandler);
 }
 
 function dbErrorHandler(err) {
     console.log("DB Error: " + err.message + "\nCode=" + err.code);
+}
+
+function getSetLocalstorage(getSetFor, lvlId, getSet, psms) {
+    if (getSetFor === 'coins') {
+        coins = localStorage.getItem("coins");
+        if (getSet === 'define') {
+            if (localStorage.getItem("coins") === null || localStorage.getItem("coins") === undefined) {
+                localStorage.setItem('coins', 50);
+            }
+        } else if (getSet === 'plus') {
+            localStorage.setItem('coins', eval(parseInt(localStorage.getItem("coins")) + psms));
+        } else if (getSet === 'minus') {
+            if (eval(parseInt(localStorage.getItem("coins")) - psms) <= 0) {
+                localStorage.setItem('coins', 0);
+            } else {
+                localStorage.setItem('coins', eval(parseInt(localStorage.getItem("coins")) - psms));
+            }
+        } else if (getSet === 'get') {
+            return localStorage.getItem("coins");
+        }
+        $('.icon_coins_no').text(localStorage.getItem("coins"));
+        return parseInt(localStorage.getItem("coins"));
+    } else if (getSetFor === 'msgid') {
+        if (getSet === 'define') {
+            if (localStorage.getItem("msgid") === null || localStorage.getItem("msgid") === undefined) {
+                localStorage.setItem('msgid', 1);
+            }
+        } else if (getSet === 'setnext') {
+            localStorage.setItem('msgid', eval(parseInt(localStorage.getItem("msgid")) + 1));
+            return localStorage.getItem("msgid");
+        } else if (getSet === 'get') {
+            return localStorage.getItem("msgid");
+        }
+    }
 }

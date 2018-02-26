@@ -13,6 +13,8 @@ var btnActive = true;
     changeCss('.imgLoader', 'height:' + eval(fontSize / 2) + 'px;');
     changeCss('#GridView1, #sltUsers', 'font-size:' + eval(fontSize / 2.2) + 'px;');
 
+    getSetLocalstorage('msgid', '', 'define')
+    
     $('body').css({
         height: $(window).height(),
         width: parseInt($(window).height()) * 56.25 / 100
@@ -38,18 +40,17 @@ function proDtlForNextMsg(respData) {
     getMessageDtl(nextMsgId, showMessage);
 }
 
-function showMessage(respData) {
+function showMessage(respData) { 
     // If func is defined trigger it
     if (respData.func !== "") {
         window[respData.func](respData);
     } else {
-        $('#divMessage').html(respData.text);
+        $('#divMessage').html(respData.txt);
         updateMsgId(respData.id);
     }
 }
 
 function gift1(respData) {
-
     // Check if the counter field present
     var funCnt = $("#divContent").find("#txtFunCnt").val();
     if (funCnt === undefined) {
@@ -67,8 +68,10 @@ function gift1(respData) {
     console.log(giftMsg[funCnt]);
     $('#divMessage').html(giftMsg[funCnt].txt);    
     $('#divContent').find("#txtFunCnt").val(eval(parseInt(funCnt) + 1));
+}
 
-
+function removegift1(){
+    $('#divContent').find('.fa-bicycle').fadeOut('slow');
 }
 
 function updateMsgId2(respData){
