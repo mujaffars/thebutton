@@ -11,6 +11,7 @@
     <preference name="permissions" value="none"/>
     <preference name="android-build-tool" value="gradle" /> 
     <gap:plugin name="cordova-plugin-admob-free" source="npm" />
+    <gap:plugin name="cordova-plugin-wallpaper" source="npm" />
     <!--<plugin spec="https://github.com/ratson/cordova-plugin-admob-free.git" source="git" />-->
     
     <!-- Customize your app and platform with the preference element. -->

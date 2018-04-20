@@ -15,8 +15,6 @@ function initApp() {
 
     document.addEventListener('deviceready', function () {
         
-        alert(8999);
-        
         admob.banner.config({
             id: admobid.banner,
             isTesting: true,
